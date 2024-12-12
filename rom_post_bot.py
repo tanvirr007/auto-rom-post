@@ -62,3 +62,22 @@ def format_caption():
 *Join* [@TanvirBuildsSupport](https://t.me/TanvirBuildsSupport)
 """
     return caption
+
+def send_photo_with_caption(bot_token, chat_id, photo_path, caption):
+    """Send a photo with a caption to a Telegram chat."""
+    if not os.path.exists(photo_path):
+        raise FileNotFoundError(f"File '{photo_path}' not found.")
+
+    url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
+    with open(photo_path, "rb") as photo:
+        response = requests.post(
+            url,
+            data={"chat_id": chat_id, "caption": caption, "parse_mode": "Markdown"},
+            files={"photo": photo}
+        )
+
+    if response.status_code != 200:
+        raise Exception(
+            f"Failed to send photo. HTTP Status: {response.status_code}, Response: {response.text}"
+        )
+    return response.json()
