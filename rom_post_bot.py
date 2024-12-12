@@ -1,6 +1,7 @@
 import os
 import requests
 from datetime import datetime
+import pytz
 
 CHAT_ID = "-100xxxxxx"
 BANNER_PATH = "banner.png"
@@ -63,6 +64,26 @@ def format_caption():
 """
     return caption
 
+def get_bangladesh_time():
+    """Get the current time and date in Bangladesh Standard Time (BST)."""
+    tz = pytz.timezone("Asia/Dhaka")
+    now = datetime.now(tz)
+    time = now.strftime("%I:%M %p")
+    date = now.strftime("%d-%B-%Y")
+    return time, date
+
+def format_footer():
+    """Generate the footer for the post with additional info."""
+    time, date = get_bangladesh_time()
+    footer = f"""
+---
+*Date:* `{date}`
+*Time:* `{time} GMT+6 Bangladesh (BST)`
+
+*Note:* `This post was generated automatically by the bot and may contain pre-scheduled updates`
+"""
+    return footer
+
 def send_photo_with_caption(bot_token, chat_id, photo_path, caption):
     """Send a photo with a caption to a Telegram chat."""
     if not os.path.exists(photo_path):
@@ -91,7 +112,10 @@ if __name__ == "__main__":
 
         caption = format_caption()
 
-        response = send_photo_with_caption(BOT_TOKEN, CHAT_ID, BANNER_PATH, caption)
+        footer = format_footer()
+        full_caption = caption + footer
+
+        response = send_photo_with_caption(BOT_TOKEN, CHAT_ID, BANNER_PATH, full_caption)
         print("Photo sent successfully. Response:", response)
 
     except FileNotFoundError as e:
