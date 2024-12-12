@@ -1,22 +1,30 @@
 import os
 import requests
+import json
 from datetime import datetime
 import pytz
 
-CHAT_ID = "-100xxxxxx"
-BANNER_PATH = "banner.png"
-TOKEN_FILE = os.path.expanduser("~/.telegram.bot.token")
+ASSETS_PATH = os.path.join(os.path.dirname(__file__), "assets")
 
-def get_bot_token():
+def load_config():
+    config_path = os.path.join(ASSETS_PATH, "config.json")
+    if os.path.exists(config_path):
+        with open(config_path, "r") as config_file:
+            return json.load(config_file)
+    else:
+        raise FileNotFoundError(f"Configuration file '{config_path}' not found.")
+
+def get_bot_token(token_file):
     """Retrieve the bot token from a file or prompt the user to enter it."""
-    if os.path.exists(TOKEN_FILE):
-        with open(TOKEN_FILE, "r") as file:
+    token_file = os.path.expanduser(token_file)
+    if os.path.exists(token_file):
+        with open(token_file, "r") as file:
             return file.read().strip()
     else:
         token = input("Enter your Telegram Bot Token: ").strip()
-        with open(TOKEN_FILE, "w") as file:
+        with open(token_file, "w") as file:
             file.write(token)
-        print(f"Token saved to {TOKEN_FILE}.")
+        print(f"Token saved to {token_file}.")
         return token
 
 def validate_bot_token(bot_token):
@@ -105,8 +113,9 @@ def send_photo_with_caption(bot_token, chat_id, photo_path, caption):
 
 if __name__ == "__main__":
     try:
+        config = load_config()
 
-        BOT_TOKEN = get_bot_token()
+        BOT_TOKEN = get_bot_token(config["token_file"])
 
         validate_bot_token(BOT_TOKEN)
 
@@ -115,7 +124,9 @@ if __name__ == "__main__":
         footer = format_footer()
         full_caption = caption + footer
 
-        response = send_photo_with_caption(BOT_TOKEN, CHAT_ID, BANNER_PATH, full_caption)
+        banner_path = os.path.join(ASSETS_PATH, config["banner_path"])
+
+        response = send_photo_with_caption(BOT_TOKEN, config["chat_id"], banner_path, full_caption)
         print("Photo sent successfully. Response:", response)
 
     except FileNotFoundError as e:
@@ -124,10 +135,9 @@ if __name__ == "__main__":
     except ValueError as e:
         print(f"Error: {e}")
         print("Please check your Telegram bot token and try again.")
-
-        if os.path.exists(TOKEN_FILE):
-            os.remove(TOKEN_FILE)
-        print(f"The token file '{TOKEN_FILE}' has been removed. Please enter the correct token next time.")
+        if os.path.exists(config["token_file"]):
+            os.remove(config["token_file"])
+        print(f"The token file '{config['token_file']}' has been removed. Please enter the correct token next time.")
 
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
