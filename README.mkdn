@@ -1,0 +1,42 @@
+## Requirements
+- Python 3.6 or higher
+The required Python packages are:
+- requests: For making HTTP requests to the Telegram API
+- pytz: Allows accurate and cross platform timezone calculations using Python 2.4 or higher
+
+### Setup
+1. Create a Telegram bot and get your bot API token:
+- Go to [BotFather](https://core.telegram.org/bots#botfather) on Telegram and follow the instructions to create a new bot
+- Save the API token that BotFather gives you
+- Add that bot to specific chat
+2. Clone this repository and navigate to project folder:
+```bash
+git clone -b EvolutionX https://github.com/tanvirr007/auto-rom-post-bot.git && cd auto-rom-post-bot
+```
+3. Install dependencies by running:
+```bash
+pip install -r requirements.txt
+```
+4. Insert your Chat ID by type:
+```bash
+nano rom_post_bot.py
+```
+5. CHAT_ID = "-100xxxxxx"
+- Replace xxxxxx with your specific chat ID
+
+### Usage
+1. Place the image you want to post in the project folder and name it banner.png
+2. Run the script:
+```bash
+python rom_post_bot.py
+```
+3. Enter your bot API token when prompted by the script [only once if your API token is valid]
+4. The script will automatically send the formatted message with the image to the specified chat
+
+### Notes
+- This script sends automated posts to Telegram
+- Feel free to customize the script as needed!
+
+### Author
+- This script is created by [тαиνir](https://github.com/tanvirr007)
+- If you find any issues or want to improve the script, feel free to open a pull request and contact me on [Telegram](https://t.me/tanvirr007)
