@@ -15,11 +15,11 @@ git clone -b crDroid https://github.com/tanvirr007/auto-rom-post-bot.git && cd a
 ```
 3. Install dependencies by running:
 ```bash
-pip install -r requirements.txt
+pip install -r assets/requirements.txt
 ```
 4. Insert your Chat ID by type:
 ```bash
-nano rom_post_bot.py
+nano assets/config.json
 ```
 5. CHAT_ID = "-100xxxxxx"
 - Replace xxxxxx with your specific chat ID
@@ -28,7 +28,7 @@ nano rom_post_bot.py
 1. Place the image you want to post in the project folder and name it banner.png
 2. Run the script:
 ```bash
-python rom_post_bot.py
+python bot.py
 ```
 3. Enter your bot API token when prompted by the script [only once if your API token is valid]
 4. The script will automatically send the formatted message with the image to the specified chat
