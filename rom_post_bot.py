@@ -81,3 +81,29 @@ def send_photo_with_caption(bot_token, chat_id, photo_path, caption):
             f"Failed to send photo. HTTP Status: {response.status_code}, Response: {response.text}"
         )
     return response.json()
+
+if __name__ == "__main__":
+    try:
+
+        BOT_TOKEN = get_bot_token()
+
+        validate_bot_token(BOT_TOKEN)
+
+        caption = format_caption()
+
+        response = send_photo_with_caption(BOT_TOKEN, CHAT_ID, BANNER_PATH, caption)
+        print("Photo sent successfully. Response:", response)
+
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+
+    except ValueError as e:
+        print(f"Error: {e}")
+        print("Please check your Telegram bot token and try again.")
+
+        if os.path.exists(TOKEN_FILE):
+            os.remove(TOKEN_FILE)
+        print(f"The token file '{TOKEN_FILE}' has been removed. Please enter the correct token next time.")
+
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
