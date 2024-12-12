@@ -17,3 +17,11 @@ def get_bot_token():
             file.write(token)
         print(f"Token saved to {TOKEN_FILE}.")
         return token
+
+def validate_bot_token(bot_token):
+    """Validate the bot token by making a test API call."""
+    url = f"https://api.telegram.org/bot{bot_token}/getMe"
+    response = requests.get(url)
+    if response.status_code != 200:
+        raise ValueError("Seems like your Telegram bot token is wrong.")
+    return response.json()
