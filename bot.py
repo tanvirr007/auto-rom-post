@@ -135,9 +135,10 @@ if __name__ == "__main__":
     except ValueError as e:
         print(f"Error: {e}")
         print("Please check your Telegram bot token and try again.")
-        if os.path.exists(config["token_file"]):
-            os.remove(config["token_file"])
-        print(f"The token file '{config['token_file']}' has been removed. Please enter the correct token next time.")
+        token_file_path = os.path.expanduser(config["token_file"])
+        if os.path.exists(token_file_path):
+            os.remove(token_file_path)
+            print(f"The token file '{token_file_path}' has been removed. Please enter the correct token next time.")
 
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
